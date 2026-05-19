@@ -14,6 +14,12 @@ while [[ $# > 0 ]]; do
     shift
 done
 
+# and log me out everything
+log() {
+    if [[ $dry == "1" ]]; then
+        echo "[DRY_RUN]: $@"
+    fi
+
 echo "$script_dir -- $filter"
 
 cd $script_dir
