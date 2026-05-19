@@ -2,7 +2,17 @@
 
 
 script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
-filter="$1"
+filter=""
+dry="0"
+
+while [[ $# > 0 ]]; do
+    if [[ $1 == "--dry" ]]; then
+        dry="1"
+    else
+        filter="$1"
+    fi
+    shift
+done
 
 echo "$script_dir -- $filter"
 
