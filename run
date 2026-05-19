@@ -18,9 +18,21 @@ done
 log() {
     if [[ $dry == "1" ]]; then
         echo "[DRY_RUN]: $@"
+    else
+        echo "$@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry == "1" ]]; then
+        return
     fi
 
-echo "$script_dir -- $filter"
+    "$@"
+}
+
+log "$script_dir -- $filter"
 
 cd $script_dir
 # we are truying to loop through the scripts without folling into the recurrsion
