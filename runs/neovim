@@ -1,4 +1,39 @@
 #!/usr/bin/env bash
 
-git clone -b v0.12.2 https://github.com/neovim/neovim.git $HOME/personal/neovim
+set -e
 
+NVIM_VERSION="v0.12.2"
+NVIM_DIR="$HOME/personal/neovim"
+
+mkdir -p "$HOME/personal"
+
+# Install dependencies
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  echo "Detected macOS"
+  brew install ninja cmake gettext curl pkg-config automake libtool unzip lua@5.1
+elif [[ -f /etc/debian_version ]]; then
+  echo "Detected Debian/Ubuntu Linux"
+  sudo apt update
+  sudo apt install -y ninja-build cmake gettext curl pkg-config automake libtool unzip lua5.1 liblua5.1-0-dev
+else
+  echo "Unsupported OS. Please install Neovim build dependencies manually."
+  exit 1
+fi
+
+# Clone Neovim
+if [[ ! -d "$NVIM_DIR" ]]; then
+  git clone -b "$NVIM_VERSION" https://github.com/neovim/neovim.git "$NVIM_DIR"
+else
+  echo "Neovim directory already exists: $NVIM_DIR"
+fi
+
+cd "$NVIM_DIR"
+
+# Build Neovim
+make CMAKE_BUILD_TYPE=RelWithDebInfo
+
+# Install system-wide
+sudo make install
+
+# Verify installation
+nvim --version
