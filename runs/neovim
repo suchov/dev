@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# script stops immediately on the first non-zero exit code.
 set -e
 
 NVIM_VERSION="v0.12.2"
@@ -10,11 +11,11 @@ mkdir -p "$HOME/personal"
 # Install dependencies
 if [[ "$OSTYPE" == "darwin"* ]]; then
   echo "Detected macOS"
-  brew install ninja cmake gettext curl pkg-config automake libtool unzip lua@5.1
+  brew install ninja cmake gettext curl pkg-config automake libtool unzip lua@5.4
 elif [[ -f /etc/debian_version ]]; then
   echo "Detected Debian/Ubuntu Linux"
   sudo apt update
-  sudo apt install -y ninja-build cmake gettext curl pkg-config automake libtool unzip lua5.1 liblua5.1-0-dev
+  sudo apt install -y ninja-build cmake gettext curl pkg-config automake libtool unzip lua5.4 liblua5.4-dev
 else
   echo "Unsupported OS. Please install Neovim build dependencies manually."
   exit 1
